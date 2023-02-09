@@ -12,7 +12,7 @@ opts.add_argument(
 
 driver = webdriver.Chrome('./chromedriver.exe', chrome_options = opts)
 
-driver.get('https://www.flashscore.co/equipo/arsenal/hA1Zm19f/resultados/')
+driver.get('')
 
 sleep(3)
 
@@ -27,26 +27,63 @@ except Exception as e:
 
 sleep(2)
 
-#Team = driver.find_element(By.XPATH, '//div[@class = "heading__name"]').text
+Team = driver.find_element(By.XPATH, '//div[@class = "heading__name"]').text
 results = driver.find_elements(By.XPATH, '//div[@title = "¡Haga click para detalles del partido!"]')
+
+more_1matches = 0
+less_1matches = 0
 
 more_2matches = 0
 less_2matches = 0
 
+more_3matches = 0
+less_3matches = 0
+
+gandg_matches = 0
+no_gandg = 0
+
 for result in results:
     
-    driver.get(result)
-    home_goals = int(driver.find_element(By.XPATH, '//div[@class = "event__score event__score--home"]').text)
-    away_goals = int(driver.find_element(By.XPATH, '//div[@class = "event__score event__score--away"]').text)
+    home_goals = int(result.find_element(By.XPATH, './/div[@class = "event__score event__score--home"]').text)
+    away_goals = int(result.find_element(By.XPATH, './/div[@class = "event__score event__score--away"]').text)
     total_goals = home_goals + away_goals
+    
+    if (home_goals != 0) and (away_goals != 0):
+        gandg_matches += 1
+    else:
+        no_gandg += 1
+    
+    if total_goals > 1.5:
+        more_1matches += 1
+    else:
+        less_1matches += 1
     
     if total_goals > 2.5:
         more_2matches += 1
     else:
         less_2matches += 1
         
+    if total_goals > 3.5:
+        more_3matches += 1
+    else:
+        less_3matches += 1
+        
+prob_more1 = round((more_1matches/len(results))*100, 2)
+prob_less1 = round((less_1matches/len(results))*100, 2)
+
 prob_more2 = round((more_2matches/len(results))*100, 2)
 prob_less2 = round((less_2matches/len(results))*100, 2)
 
-print(len(results))
-print(f'mas de 2.5 = {prob_more2}%\nmenos de 2.5 = {prob_less2}%')
+prob_more3 = round((more_3matches/len(results))*100, 2)
+prob_less3 = round((less_3matches/len(results))*100, 2)
+
+prob_goal_and_goal = round((gandg_matches/len(results))*100, 2)
+prob_no_gandg = round((no_gandg/len(results))*100, 2)
+
+print('----------------------------------------------------------------------------------------\n')
+print(Team+'\n')
+print(f'mas de 1.5 = {prob_more1}%\nmenos de 1.5 = {prob_less1}%\n')
+print(f'mas de 2.5 = {prob_more2}%\nmenos de 2.5 = {prob_less2}%\n')
+print(f'mas de 3.5 = {prob_more3}%\nmenos de 3.5 = {prob_less3}%\n')
+print(f'ambos marcan = {prob_goal_and_goal}%\nNO marcan ambos = {prob_no_gandg}%\n')
+print('----------------------------------------------------------------------------------------')
