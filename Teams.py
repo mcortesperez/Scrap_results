@@ -4,7 +4,6 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.chrome.options import Options
 from time import sleep
-from selenium.webdriver import ActionChains
 
 opts = Options()
 opts.add_argument(
@@ -25,25 +24,29 @@ try:
     boton_cookies.click()
 except Exception as e:
     print(e)
-    
-action = ActionChains(driver)
 
 sleep(2)
 
-for i in range(3):
-    
-    WebDriverWait(driver, 10).until(
-        EC.presence_of_element_located((By.XPATH, '//a[@class = "event__more event__more--static"]'))
-    )    
-    
-    #link = driver.find_element(By.XPATH, '//div[@class = "sportName soccer"]/a[text() = "Mostrar más partidos"]')
-    action.move_to_element(driver.find_element(By.XPATH, '//a[@class = "event__more event__more--static"]')).click().perform()
-    
-    WebDriverWait(driver, 10).until(
-        EC.presence_of_element_located((By.XPATH, '//div[@title = "¡Haga click para detalles del partido!"]'))
-    )
-    
-    sleep(2)
-#results = driver.find_elements(By.XPATH, '//div[@title = "¡Haga click para detalles del partido!"]')
+#Team = driver.find_element(By.XPATH, '//div[@class = "heading__name"]').text
+results = driver.find_elements(By.XPATH, '//div[@title = "¡Haga click para detalles del partido!"]')
 
-#print(len(results))
+more_2matches = 0
+less_2matches = 0
+
+for result in results:
+    
+    driver.get(result)
+    home_goals = int(driver.find_element(By.XPATH, '//div[@class = "event__score event__score--home"]').text)
+    away_goals = int(driver.find_element(By.XPATH, '//div[@class = "event__score event__score--away"]').text)
+    total_goals = home_goals + away_goals
+    
+    if total_goals > 2.5:
+        more_2matches += 1
+    else:
+        less_2matches += 1
+        
+prob_more2 = round((more_2matches/len(results))*100, 2)
+prob_less2 = round((less_2matches/len(results))*100, 2)
+
+print(len(results))
+print(f'mas de 2.5 = {prob_more2}%\nmenos de 2.5 = {prob_less2}%')
