@@ -14,7 +14,7 @@ driver = webdriver.Chrome('./chromedriver.exe', chrome_options = opts)
 
 driver.get('')
 
-sleep(3)
+sleep(2)
 
 try:
     boton_cookies = WebDriverWait(driver, 10).until(
