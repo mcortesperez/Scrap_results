@@ -5,6 +5,14 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.chrome.options import Options
 from time import sleep
 
+cont = 1.0
+for i in range(30):
+    porcentaje_tope = round(100/cont, 2)
+    print('___________________________________')
+    print(f'{round(cont, 1)}\t\t\t{porcentaje_tope}')
+    cont += 0.1
+print('\n\n\n')
+
 opts = Options()
 opts.add_argument(
     "user-agent = Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36"
@@ -12,7 +20,7 @@ opts.add_argument(
 
 driver = webdriver.Chrome('./chromedriver.exe', chrome_options = opts)
 
-driver.get('https://www.flashscore.co/equipo/denver-nuggets/CxvW27TI/resultados/')
+driver.get('')
 
 sleep(2)
 
@@ -60,7 +68,7 @@ while score_limit < 245.5:
     
     
     
-driver.get('https://www.flashscore.co/equipo/orlando-magic/QZMS36Dn/resultados/')
+driver.get('')
 
 sleep(1)
 
