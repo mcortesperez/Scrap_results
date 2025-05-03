@@ -20,7 +20,7 @@ opts.add_argument(
 
 driver = webdriver.Chrome('./chromedriver.exe', chrome_options = opts)
 
-driver.get('')
+driver.get('https://www.flashscore.co/equipo/brooklyn-nets/bsAMUpDO/resultados/')
 
 sleep(2)
 
@@ -49,9 +49,9 @@ for result in results:
     total_score = home_score + away_score
     Total_Scores.append(total_score)
     
-score_limit = 218.5
+score_limit = 209.5
     
-while score_limit < 245.5:
+while score_limit <= 235.5:
     more = 0
     less = 0
     for x in Total_Scores:
@@ -68,7 +68,7 @@ while score_limit < 245.5:
     
     
     
-driver.get('')
+driver.get('https://www.flashscore.co/equipo/philadelphia-76ers/vwRW2QSh/resultados/')
 
 sleep(1)
 
@@ -86,9 +86,9 @@ for result in results:
     total_score = home_score + away_score
     Total_Scores.append(total_score)
     
-score_limit = 218.5
+score_limit = 209.5
     
-while score_limit < 245.5:
+while score_limit <= 235.5:
     more = 0
     less = 0
     for x in Total_Scores:
